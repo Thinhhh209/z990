@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thịnh Combo Tap</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      user-select: none;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: #121212;
+      font-family: 'Arial', sans-serif;
+      color: #ffffff;
+      overflow: hidden;
+    }
+
+    .card {
+      text-align: center;
+      background: #1e1e1e;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      max-width: 90%;
+      width: 400px;
+    }
+
+    /* Chữ THỊNH chính */
+    #thinh-text {
+      font-size: 5rem;
+      font-weight: 900;
+      margin: 10px 0;
+      cursor: pointer;
+      transition: transform 0.05s ease, color 0.2s ease, text-shadow 0.2s ease;
+      color: hsl(120, 100%, 50%);
+      text-shadow: 0 0 20px hsl(120, 100%, 50%, 0.6);
+    }
+
+    #thinh-text:active {
+      transform: scale(0.9);
+    }
+
+    /* Đếm Combo */
+    .combo-box {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    /* Khung thông báo mốc */
+    #notification {
+      height: 30px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #ffeb3b;
+      margin-bottom: 20px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    /* Các nút bấm */
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-tap {
+      background-color: #4caf50;
+      color: white;
+      box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+    }
+
+    .btn-tap:active {
+      transform: scale(0.95);
+    }
+
+    .btn-reset {
+      background-color: #444;
+      color: #ccc;
+    }
+
+    .btn-reset:hover {
+      background-color: #555;
+    }
+
+    /* Hiệu ứng số +1 bắn lên khi click */
+    .floating-pop {
+      position: absolute;
+      font-weight: bold;
+      font-size: 1.5rem;
+      pointer-events: none;
+      animation: floatUp 0.6s ease-out forwards;
+    }
+
+    @keyframes floatUp {
+      0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-50px) scale(1.4);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <div id="notification">Chạm để bắt đầu!</div>
+    
+    <!-- Bạn có thể click trực tiếp vào chữ THỊNH luôn -->
+    <div id="thinh-text" onclick="handleTap(event)">THỊNH</div>
+    
+    <div class="combo-box">
+      COMBO: <span id="combo-count">0</span>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn-tap" onclick="handleTap(event)">Chạm Thịnh 🔥</button>
+      <button class="btn-reset" onclick="resetCombo()">Chơi Lại 🔄</button>
+    </div>
+  </div>
+
+  <script>
+    let combo = 0;
+
+    function handleTap(e) {
+      combo++;
+      updateUI();
+      createFloatingText(e);
+      checkNotification();
+    }
+
+    function updateUI() {
+      const thinhText = document.getElementById('thinh-text');
+      const comboCount = document.getElementById('combo-count');
+      
+      comboCount.innerText = combo;
+
+      // Tính toán chuyển màu từ Xanh Lá (Hue = 120) sang Đỏ (Hue = 0)
+      // Càng tăng combo màu càng tiệm cận Đỏ. (Đạt 100 combo là chuyển đỏ hoàn toàn)
+      let hue = Math.max(0, 120 - (combo * 1.2)); 
+      
+      let currentColor = `hsl(${hue}, 100%, 50%)`;
+      thinhText.style.color = currentColor;
+      thinhText.style.textShadow = `0 0 25px hsl(${hue}, 100%, 50%, 0.8)`;
+      
+      // Hiệu ứng nảy chữ nhẹ khi tap
+      thinhText.style.transform = 'scale(1.15)';
+      setTimeout(() => {
+        thinhText.style.transform = 'scale(1)';
+      }, 80);
+    }
+
+    function checkNotification() {
+      const notice = document.getElementById('notification');
+      
+      let message = "";
+      if (combo === 10) message = "⚡ Khởi động nhẹ nhàng!";
+      else if (combo === 25) message = "🔥 Đang lên cơ rồi!";
+      else if (combo === 50) message = "🚀 THỊNH TỐC ĐỘ!";
+      else if (combo === 100) message = "👑 THỊNH BÁ CHỦ MÀN HÌNH!";
+      else if (combo === 200) message = "💥 SIÊU SẤU THỊNH!";
+
+      if (message !== "") {
+        notice.innerText = message;
+        notice.style.opacity = '1';
+        setTimeout(() => {
+          notice.style.opacity = '0';
+        }, 2000);
+      }
+    }
+
+    // Tạo hiệu ứng số nhảy lên vị trí con trỏ / ngón tay
+    function createFloatingText(e) {
+      const pop = document.createElement('div');
+      pop.className = 'floating-pop';
+      pop.innerText = `+1`;
+      
+      // Lấy màu hiện tại để làm màu hiệu ứng bay
+      let hue = Math.max(0, 120 - (combo * 1.2));
+      pop.style.color = `hsl(${hue}, 100%, 60%)`;
+
+      // Xác định vị trí xuất hiện
+      let x = e.clientX || window.innerWidth / 2;
+      let y = e.clientY || window.innerHeight / 2;
+
+      pop.style.left = `${x - 15}px`;
+      pop.style.top = `${y - 20}px`;
+
+      document.body.appendChild(pop);
+
+      setTimeout(() => {
+        pop.remove();
+      }, 600);
+    }
+
+    function resetCombo() {
+      combo = 0;
+      updateUI();
+      const notice = document.getElementById('notification');
+      notice.innerText = "Đã làm mới!";
+      notice.style.opacity = '1';
+      setTimeout(() => {
+        notice.style.opacity = '0';
+      }, 1500);
+    }
+  </script>
+</body>
+</html>
