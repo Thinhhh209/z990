@@ -2,229 +2,387 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#121212">
   <title>Thịnh Combo Tap</title>
   <style>
-    * {
-      box-sizing: border-box;
-      user-select: none;
+    /* ===== CSS Custom Properties ===== */
+    :root {
+      --bg-primary: #121212;
+      --bg-card: #1e1e1e;
+      --text-primary: #ffffff;
+      --color-start-hue: 120; /* Xanh lá */
+      --color-end-hue: 0;     /* Đỏ */
+      --combo-max: 100;       /* Số combo để đạt đỏ hoàn toàn */
+      --shadow-color: rgba(0, 0, 0, 0.5);
+      --transition-speed: 0.2s;
     }
-    body {
+
+    /* ===== Reset & Base ===== */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      height: 100vh;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      background-color: #121212;
-      font-family: 'Arial', sans-serif;
-      color: #ffffff;
+      background-color: var(--bg-primary);
+      font-family: 'Arial', 'Helvetica', sans-serif;
+      color: var(--text-primary);
       overflow: hidden;
+      padding: 20px;
     }
 
+    /* ===== Card Container ===== */
     .card {
       text-align: center;
-      background: #1e1e1e;
-      padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      max-width: 90%;
-      width: 400px;
+      background: var(--bg-card);
+      padding: 40px 30px;
+      border-radius: 24px;
+      box-shadow: 0 15px 40px var(--shadow-color);
+      max-width: 100%;
+      width: 420px;
+      transition: box-shadow 0.3s ease;
     }
 
-    /* Chữ THỊNH chính */
-    #thinh-text {
-      font-size: 5rem;
-      font-weight: 900;
-      margin: 10px 0;
-      cursor: pointer;
-      transition: transform 0.05s ease, color 0.2s ease, text-shadow 0.2s ease;
-      color: hsl(120, 100%, 50%);
-      text-shadow: 0 0 20px hsl(120, 100%, 50%, 0.6);
+    .card:hover {
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
     }
 
-    #thinh-text:active {
-      transform: scale(0.9);
-    }
-
-    /* Đếm Combo */
-    .combo-box {
-      font-size: 1.5rem;
-      margin-bottom: 20px;
-      font-weight: bold;
-    }
-
-    /* Khung thông báo mốc */
+    /* ===== Notification Area ===== */
     #notification {
-      height: 30px;
+      min-height: 28px;
       font-size: 1.1rem;
       font-weight: bold;
       color: #ffeb3b;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       opacity: 0;
       transition: opacity 0.3s ease;
+      letter-spacing: 0.5px;
     }
 
-    /* Các nút bấm */
+    /* ===== Main THỊNH Text ===== */
+    #thinh-text {
+      font-size: 5.5rem;
+      font-weight: 900;
+      margin: 15px 0;
+      cursor: pointer;
+      transition: color 0.15s ease, text-shadow 0.15s ease;
+      color: hsl(var(--color-start-hue), 100%, 50%);
+      text-shadow: 0 0 25px hsla(var(--color-start-hue), 100%, 50%, 0.6);
+      line-height: 1;
+      display: inline-block;
+      /* Cần thiết cho transform không ảnh hưởng layout */
+      will-change: transform;
+    }
+
+    #thinh-text.tap-effect {
+      transform: scale(1.12);
+    }
+
+    /* ===== Combo Display ===== */
+    .combo-box {
+      font-size: 1.6rem;
+      margin-bottom: 25px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    #combo-count {
+      display: inline-block;
+      min-width: 50px;
+      color: #4caf50;
+      transition: color 0.2s ease;
+    }
+
+    /* ===== Buttons ===== */
     .btn-group {
       display: flex;
-      gap: 10px;
+      gap: 12px;
       justify-content: center;
+      flex-wrap: wrap;
     }
 
     button {
-      padding: 12px 24px;
+      padding: 14px 28px;
       font-size: 1rem;
-      font-weight: bold;
+      font-weight: 700;
       border: none;
-      border-radius: 10px;
+      border-radius: 50px;
       cursor: pointer;
       transition: all 0.2s ease;
+      outline: none;
+      letter-spacing: 0.5px;
+      position: relative;
+      overflow: hidden;
+      background-color: #333;
+      color: #ddd;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    button:focus-visible {
+      outline: 2px solid #ffffff;
+      outline-offset: 3px;
     }
 
     .btn-tap {
       background-color: #4caf50;
       color: white;
-      box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+      box-shadow: 0 6px 15px rgba(76, 175, 80, 0.4);
+    }
+
+    .btn-tap:hover {
+      background-color: #45a049;
+      transform: translateY(-2px);
     }
 
     .btn-tap:active {
-      transform: scale(0.95);
+      transform: scale(0.94);
+      box-shadow: 0 3px 8px rgba(76, 175, 80, 0.3);
     }
 
     .btn-reset {
-      background-color: #444;
+      background-color: #3a3a3a;
       color: #ccc;
     }
 
     .btn-reset:hover {
-      background-color: #555;
+      background-color: #4a4a4a;
+      color: #fff;
+      transform: translateY(-2px);
     }
 
-    /* Hiệu ứng số +1 bắn lên khi click */
+    .btn-reset:active {
+      transform: scale(0.94);
+    }
+
+    /* ===== Floating +1 Animation ===== */
     .floating-pop {
-      position: absolute;
-      font-weight: bold;
-      font-size: 1.5rem;
+      position: fixed;
+      font-weight: 900;
+      font-size: 1.6rem;
       pointer-events: none;
-      animation: floatUp 0.6s ease-out forwards;
+      z-index: 1000;
+      animation: floatUp 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+      text-shadow: 0 0 8px currentColor;
+      will-change: transform, opacity;
     }
 
     @keyframes floatUp {
       0% {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: translateY(0) scale(0.8);
+      }
+      30% {
+        transform: translateY(-10px) scale(1.2);
       }
       100% {
         opacity: 0;
-        transform: translateY(-50px) scale(1.4);
+        transform: translateY(-60px) scale(1.1);
       }
     }
   </style>
 </head>
 <body>
-
   <div class="card">
-    <div id="notification">Chạm để bắt đầu!</div>
+    <div id="notification" aria-live="polite">Chạm để bắt đầu!</div>
     
-    <!-- Bạn có thể click trực tiếp vào chữ THỊNH luôn -->
-    <div id="thinh-text" onclick="handleTap(event)">THỊNH</div>
+    <!-- Vùng chữ THỊNH có thể tap -->
+    <div id="thinh-text" role="button" tabindex="0" aria-label="Nhấn để tăng combo">THỊNH</div>
     
     <div class="combo-box">
       COMBO: <span id="combo-count">0</span>
     </div>
 
     <div class="btn-group">
-      <button class="btn-tap" onclick="handleTap(event)">Chạm Thịnh 🔥</button>
-      <button class="btn-reset" onclick="resetCombo()">Chơi Lại 🔄</button>
+      <button type="button" id="btn-tap" class="btn-tap">Chạm Thịnh 🔥</button>
+      <button type="button" id="btn-reset" class="btn-reset">Chơi Lại 🔄</button>
     </div>
   </div>
 
   <script>
-    let combo = 0;
+    (function() {
+      "use strict";
 
-    function handleTap(e) {
-      combo++;
-      updateUI();
-      createFloatingText(e);
-      checkNotification();
-    }
-
-    function updateUI() {
+      // ===== DOM Elements Cache =====
       const thinhText = document.getElementById('thinh-text');
-      const comboCount = document.getElementById('combo-count');
-      
-      comboCount.innerText = combo;
+      const comboCountSpan = document.getElementById('combo-count');
+      const notificationDiv = document.getElementById('notification');
+      const btnTap = document.getElementById('btn-tap');
+      const btnReset = document.getElementById('btn-reset');
 
-      // Tính toán chuyển màu từ Xanh Lá (Hue = 120) sang Đỏ (Hue = 0)
-      // Càng tăng combo màu càng tiệm cận Đỏ. (Đạt 100 combo là chuyển đỏ hoàn toàn)
-      let hue = Math.max(0, 120 - (combo * 1.2)); 
-      
-      let currentColor = `hsl(${hue}, 100%, 50%)`;
-      thinhText.style.color = currentColor;
-      thinhText.style.textShadow = `0 0 25px hsl(${hue}, 100%, 50%, 0.8)`;
-      
-      // Hiệu ứng nảy chữ nhẹ khi tap
-      thinhText.style.transform = 'scale(1.15)';
-      setTimeout(() => {
-        thinhText.style.transform = 'scale(1)';
-      }, 80);
-    }
+      // ===== State =====
+      let combo = 0;
+      const MAX_HUE_COMBO = 100; // Số combo để đạt màu đỏ (hue = 0)
 
-    function checkNotification() {
-      const notice = document.getElementById('notification');
-      
-      let message = "";
-      if (combo === 10) message = "⚡ Khởi động nhẹ nhàng!";
-      else if (combo === 25) message = "🔥 Đang lên cơ rồi!";
-      else if (combo === 50) message = "🚀 THỊNH TỐC ĐỘ!";
-      else if (combo === 100) message = "👑 THỊNH BÁ CHỦ MÀN HÌNH!";
-      else if (combo === 200) message = "💥 SIÊU SẤU THỊNH!";
+      // ===== Notification Messages Mapping =====
+      const MILESTONE_MESSAGES = new Map([
+        [10, '⚡ Khởi động nhẹ nhàng!'],
+        [25, '🔥 Đang lên cơ rồi!'],
+        [50, '🚀 THỊNH TỐC ĐỘ!'],
+        [100, '👑 THỊNH BÁ CHỦ MÀN HÌNH!'],
+        [200, '💥 SIÊU SẤU THỊNH!']
+      ]);
 
-      if (message !== "") {
-        notice.innerText = message;
-        notice.style.opacity = '1';
-        setTimeout(() => {
-          notice.style.opacity = '0';
-        }, 2000);
+      // ===== Helper: Calculate current hue based on combo =====
+      function getCurrentHue() {
+        return Math.max(0, 120 - (combo * 1.2));
       }
-    }
 
-    // Tạo hiệu ứng số nhảy lên vị trí con trỏ / ngón tay
-    function createFloatingText(e) {
-      const pop = document.createElement('div');
-      pop.className = 'floating-pop';
-      pop.innerText = `+1`;
+      // ===== Update UI: text color, combo number, text effect =====
+      function updateUI() {
+        const hue = getCurrentHue();
+        const color = `hsl(${hue}, 100%, 50%)`;
+        
+        // Cập nhật chữ THỊNH
+        thinhText.style.color = color;
+        thinhText.style.textShadow = `0 0 30px hsla(${hue}, 100%, 50%, 0.75)`;
+        
+        // Cập nhật số combo
+        comboCountSpan.textContent = combo;
+        comboCountSpan.style.color = color;
+
+        // Hiệu ứng bấm nảy (thêm class, tự gỡ sau 80ms)
+        thinhText.classList.add('tap-effect');
+        setTimeout(() => {
+          thinhText.classList.remove('tap-effect');
+        }, 80);
+      }
+
+      // ===== Check and display milestone notification =====
+      function checkMilestone() {
+        if (MILESTONE_MESSAGES.has(combo)) {
+          const message = MILESTONE_MESSAGES.get(combo);
+          notificationDiv.textContent = message;
+          notificationDiv.style.opacity = '1';
+          
+          // Clear any existing timeout to avoid overlap
+          if (notificationDiv._timeoutId) {
+            clearTimeout(notificationDiv._timeoutId);
+          }
+          
+          notificationDiv._timeoutId = setTimeout(() => {
+            notificationDiv.style.opacity = '0';
+            notificationDiv._timeoutId = null;
+          }, 2000);
+        }
+      }
+
+      // ===== Create floating +1 text at event position =====
+      function spawnFloatingText(event) {
+        const pop = document.createElement('div');
+        pop.className = 'floating-pop';
+        pop.textContent = '+1';
+        
+        const hue = getCurrentHue();
+        pop.style.color = `hsl(${hue}, 100%, 65%)`;
+        
+        // Lấy tọa độ từ event (hỗ trợ cả mouse và touch)
+        let clientX, clientY;
+        if (event.touches) {
+          // Touch event
+          clientX = event.touches[0].clientX;
+          clientY = event.touches[0].clientY;
+        } else {
+          clientX = event.clientX;
+          clientY = event.clientY;
+        }
+        
+        // Fallback nếu không có tọa độ
+        if (clientX === undefined || clientY === undefined) {
+          clientX = window.innerWidth / 2;
+          clientY = window.innerHeight / 2;
+        }
+        
+        pop.style.left = `${clientX - 20}px`;
+        pop.style.top = `${clientY - 25}px`;
+        
+        document.body.appendChild(pop);
+        
+        // Tự hủy sau khi animation kết thúc
+        pop.addEventListener('animationend', () => {
+          pop.remove();
+        });
+      }
+
+      // ===== Core: Handle tap action =====
+      function handleTap(event) {
+        // Ngăn sự kiện lan ra ngoài nếu cần
+        event.preventDefault?.();
+        
+        combo++;
+        updateUI();
+        spawnFloatingText(event);
+        checkMilestone();
+      }
+
+      // ===== Reset combo =====
+      function resetCombo() {
+        combo = 0;
+        updateUI();
+        
+        // Hiển thị thông báo reset
+        notificationDiv.textContent = 'Đã làm mới!';
+        notificationDiv.style.opacity = '1';
+        
+        if (notificationDiv._timeoutId) {
+          clearTimeout(notificationDiv._timeoutId);
+        }
+        notificationDiv._timeoutId = setTimeout(() => {
+          notificationDiv.style.opacity = '0';
+          notificationDiv._timeoutId = null;
+        }, 1500);
+      }
+
+      // ===== Event Listeners =====
+      // Hỗ trợ cả click và touch để tương tác mượt trên mobile
+      thinhText.addEventListener('click', handleTap);
+      thinhText.addEventListener('touchend', (e) => {
+        e.preventDefault(); // Ngăn zoom hoặc scroll khi tap nhanh
+        handleTap(e);
+      });
       
-      // Lấy màu hiện tại để làm màu hiệu ứng bay
-      let hue = Math.max(0, 120 - (combo * 1.2));
-      pop.style.color = `hsl(${hue}, 100%, 60%)`;
+      btnTap.addEventListener('click', handleTap);
+      btnTap.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        handleTap(e);
+      });
+      
+      btnReset.addEventListener('click', resetCombo);
+      btnReset.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        resetCombo();
+      });
 
-      // Xác định vị trí xuất hiện
-      let x = e.clientX || window.innerWidth / 2;
-      let y = e.clientY || window.innerHeight / 2;
+      // Phím tắt: Space hoặc Enter khi focus vào chữ THỊNH
+      thinhText.addEventListener('keydown', (e) => {
+        if (e.key === ' ' || e.key === 'Enter') {
+          e.preventDefault();
+          // Tạo event giả để spawn text ở giữa màn hình
+          const fakeEvent = { clientX: window.innerWidth / 2, clientY: window.innerHeight / 2 };
+          handleTap(fakeEvent);
+        }
+      });
 
-      pop.style.left = `${x - 15}px`;
-      pop.style.top = `${y - 20}px`;
-
-      document.body.appendChild(pop);
-
-      setTimeout(() => {
-        pop.remove();
-      }, 600);
-    }
-
-    function resetCombo() {
-      combo = 0;
+      // ===== Khởi tạo hiển thị ban đầu =====
       updateUI();
-      const notice = document.getElementById('notification');
-      notice.innerText = "Đã làm mới!";
-      notice.style.opacity = '1';
+      // Hiện thông báo chào mừng
+      notificationDiv.style.opacity = '1';
       setTimeout(() => {
-        notice.style.opacity = '0';
-      }, 1500);
-    }
+        notificationDiv.style.opacity = '0';
+      }, 2000);
+
+    })();
   </script>
 </body>
 </html>
