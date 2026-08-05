@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Trang cá nhân</title>
+<script>
+  // Đặt theme trước khi trang vẽ để tránh nháy sáng/tối lúc mới tải.
+  (function () {
+    try {
+      var saved = localStorage.getItem("portfolio_theme");
+      var theme = saved || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    } catch (e) {}
+  })();
+</script>
+<meta name="description" content="Trang giới thiệu bản thân" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ================= LOADING SCREEN ================= -->
+  <div id="loading-screen">
+    <div class="loader-logo" id="loader-logo">
+      <svg viewBox="0 0 100 100" fill="none">
+        <g id="loader-petals">
+          <ellipse cx="50" cy="28" rx="10" ry="20" fill="#e8577a" transform="rotate(0 50 50)"/>
+          <ellipse cx="50" cy="28" rx="10" ry="20" fill="#e8577a" transform="rotate(60 50 50)"/>
+          <ellipse cx="50" cy="28" rx="10" ry="20" fill="#e8577a" transform="rotate(120 50 50)"/>
+          <ellipse cx="50" cy="28" rx="10" ry="20" fill="#2e7d6b" transform="rotate(180 50 50)"/>
+          <ellipse cx="50" cy="28" rx="10" ry="20" fill="#2e7d6b" transform="rotate(240 50 50)"/>
+          <ellipse cx="50" cy="28" rx="10" ry="20" fill="#2e7d6b" transform="rotate(300 50 50)"/>
+        </g>
+        <circle cx="50" cy="50" r="13" fill="#e7b24b"/>
+      </svg>
+    </div>
+    <span class="loader-text">Đang tải…</span>
+  </div>
+
+  <!-- ================= NỀN ĐỘNG ================= -->
+  <canvas id="bg-canvas"></canvas>
+  <div class="gradient-blob blob-1"></div>
+  <div class="gradient-blob blob-2"></div>
+  <div class="gradient-blob blob-3"></div>
+
+  <!-- ================= NAV ================= -->
+  <header id="navbar">
+    <div class="container nav-inner">
+      <a href="#home" class="nav-brand">
+        <svg class="nav-brand-mark" viewBox="0 0 100 100" fill="none">
+          <ellipse cx="50" cy="28" rx="10" ry="20" fill="#e8577a" transform="rotate(0 50 50)"/>
+          <ellipse cx="50" cy="28" rx="10" ry="20" fill="#e8577a" transform="rotate(60 50 50)"/>
+          <ellipse cx="50" cy="28" rx="10" ry="20" fill="#e8577a" transform="rotate(120 50 50)"/>
+          <ellipse cx="50" cy="28" rx="10" ry="20" fill="#2e7d6b" transform="rotate(180 50 50)"/>
+          <ellipse cx="50" cy="28" rx="10" ry="20" fill="#2e7d6b" transform="rotate(240 50 50)"/>
+          <ellipse cx="50" cy="28" rx="10" ry="20" fill="#2e7d6b" transform="rotate(300 50 50)"/>
+          <circle cx="50" cy="50" r="13" fill="#e7b24b"/>
+        </svg>
+        <span id="nav-name">Trang cá nhân</span>
+      </a>
+
+      <nav class="nav-links" id="nav-links">
+        <a href="#home">Trang chủ</a>
+        <a href="#info">Giới thiệu</a>
+        <a href="#skills">Kỹ năng</a>
+        <a href="#projects">Dự án</a>
+        <a href="#achievements">Thành tích</a>
+        <a href="#contact">Liên hệ</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="icon-btn" id="theme-toggle" aria-label="Đổi giao diện sáng/tối">
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </button>
+        <button class="nav-toggle" id="nav-toggle" aria-label="Mở menu"><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ================= HERO ================= -->
+    <section id="home">
+      <div class="container hero-grid">
+        <div class="hero-content reveal">
+          <div class="hero-eyebrow">Xin chào, rất vui được gặp bạn 👋</div>
+          <h1 class="hero-title">
+            <span id="typing-line" class="typing-line"></span><span class="typing-cursor">&nbsp;</span>
+          </h1>
+          <p class="hero-subtitle" id="hero-subtitle"></p>
+          <p class="hero-bio" id="hero-bio">Đang tải thông tin…</p>
+          <div class="hero-actions">
+            <a href="#projects" class="btn btn-primary">Xem dự án</a>
+            <a href="#contact" class="btn btn-ghost">Liên hệ ngay</a>
+          </div>
+          <div class="hero-socials" id="hero-socials"></div>
+        </div>
+
+        <div class="hero-visual">
+          <svg class="avatar-ring" viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="96" stroke="var(--color-primary)" stroke-width="1.5" stroke-dasharray="4 10" opacity="0.5"/>
+            <circle cx="100" cy="100" r="80" stroke="var(--color-secondary)" stroke-width="1" stroke-dasharray="1 8" opacity="0.4"/>
+          </svg>
+          <div class="avatar-frame" id="avatar-frame">
+            <span class="avatar-initials" id="avatar-initials">?</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="scroll-cue">
+        <span>Cuộn xuống</span>
+        <span class="scroll-cue-line"></span>
+      </div>
+    </section>
+
+    <!-- ================= INFO ================= -->
+    <section id="info">
+      <div class="container">
+        <div class="eyebrow reveal">Giới thiệu</div>
+        <h2 class="section-title reveal">Thông tin cá nhân</h2>
+        <p class="section-lead reveal">Một vài điều cơ bản về mình — bấm vào từng thẻ để xem một bất ngờ nhỏ 🌸</p>
+        <div class="info-grid" id="info-grid"></div>
+      </div>
+    </section>
+
+    <!-- ================= SKILLS ================= -->
+    <section id="skills">
+      <div class="container">
+        <div class="eyebrow reveal">Kỹ năng</div>
+        <h2 class="section-title reveal">Những gì mình biết làm</h2>
+        <p class="section-lead reveal">Vẫn đang học mỗi ngày — đây là mức độ tự tin hiện tại của mình với từng kỹ năng.</p>
+        <div class="skills-grid" id="skills-grid"></div>
+      </div>
+    </section>
+
+    <!-- ================= PROJECTS ================= -->
+    <section id="projects">
+      <div class="container">
+        <div class="eyebrow reveal">Dự án</div>
+        <h2 class="section-title reveal">Dự án cá nhân</h2>
+        <p class="section-lead reveal">Một số sản phẩm mình đã và đang xây dựng.</p>
+        <div class="projects-grid" id="projects-grid"></div>
+      </div>
+    </section>
+
+    <!-- ================= ACHIEVEMENTS ================= -->
+    <section id="achievements">
+      <div class="container">
+        <div class="eyebrow reveal">Thành tích</div>
+        <h2 class="section-title reveal">Những cột mốc</h2>
+        <p class="section-lead reveal">Ghi lại để nhìn lại chặng đường đã đi qua.</p>
+        <div class="achievement-list" id="achievement-list"></div>
+      </div>
+    </section>
+
+    <!-- ================= CONTACT ================= -->
+    <section id="contact">
+      <div class="container">
+        <div class="eyebrow reveal">Kết nối</div>
+        <h2 class="section-title reveal">Cùng trò chuyện nhé</h2>
+        <p class="section-lead reveal">Bạn có thể tìm mình qua các kênh dưới đây.</p>
+        <div class="social-row reveal" id="social-row"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <span id="footer-text">© 2026 — Phiên bản 1.0</span>
+      · <a href="admin.html" style="text-decoration:underline;">Quản trị</a>
+    </div>
+  </footer>
+
+  <!-- ================= MUSIC PLAYER ================= -->
+  <button id="music-toggle" aria-label="Bật/tắt nhạc nền">
+    <svg class="icon-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+  </button>
+  <!-- Thêm file nhạc của bạn tại assets/music/theme.mp3 (xem assets/music/README.txt) -->
+  <audio id="bg-music" loop preload="none">
+    <source src="assets/music/theme.mp3" type="audio/mpeg" />
+  </audio>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

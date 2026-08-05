@@ -1,0 +1,41 @@
+{
+  "name": "Nguyễn Văn A",
+  "title": "Web Developer & Người kể chuyện bằng code",
+  "avatar": "",
+  "cover": "",
+  "bio": "Xin chào, mình là một lập trình viên yêu thích tạo ra những sản phẩm nhỏ nhưng có hồn. Đây là phiên bản đầu tiên của trang cá nhân — nơi mình sẽ cập nhật hành trình học tập, dự án và những cột mốc của bản thân theo thời gian.",
+  "birthday": "01/01/2000",
+  "job": "Lập trình viên Frontend",
+  "location": "Việt Nam",
+  "hobbies": ["Đọc sách", "Nghe nhạc", "Chơi game", "Chụp ảnh"],
+  "skills": [
+    { "name": "HTML / CSS", "level": 90 },
+    { "name": "JavaScript", "level": 80 },
+    { "name": "UI/UX Design", "level": 70 },
+    { "name": "Git & GitHub", "level": 75 }
+  ],
+  "socials": {
+    "facebook": "",
+    "zalo": "",
+    "tiktok": "",
+    "instagram": "",
+    "youtube": "",
+    "github": "",
+    "email": ""
+  },
+  "projects": [
+    {
+      "name": "Trang cá nhân v1",
+      "description": "Sản phẩm đầu tay — trang giới thiệu bản thân với hiệu ứng cuộn mượt, dark mode và trang quản trị riêng.",
+      "link": "",
+      "image": ""
+    }
+  ],
+  "achievements": [
+    {
+      "title": "Hoàn thành phiên bản đầu tiên của trang cá nhân",
+      "year": "2026",
+      "description": "Cột mốc đầu tiên trong hành trình xây dựng thương hiệu cá nhân."
+    }
+  ]
+}
