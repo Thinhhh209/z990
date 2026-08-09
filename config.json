@@ -1,0 +1,48 @@
+{
+  "profile": {
+    "name": "Tr.Thịnh",
+    "bio": "99% chatgpt",
+    "avatar": "assets/avatar.jpg",
+    "status": "Off"
+  },
+  "theme": {
+    "primaryColor": "#FFB4E6",
+    "secondaryColor": "#B4E6FF",
+    "font": "Quicksand",
+    "background": "assets/bg.jpg"
+  },
+  "navigation": [
+    { "name": "Home", "url": "index.html", "icon": "home" },
+    { "name": "About Me", "url": "about.html", "icon": "heart" },
+    { "name": "Music", "url": "music.html", "icon": "music" },
+    { "name": "Links", "url": "links.html", "icon": "link" }
+  ],
+  "links": {
+    "Mạng xã hội": [
+      { "name": "Click vào để nhận mã 80k cho Shopee", "url": "https://s.shopee.vn/9pdNUCnYWd", "icon": "shopee" },
+      { "name": "TikTok", "url": "https://tiktok.com/@_truongthinh09", "icon": "music-2" }
+    ],
+    "Công việc": [
+      { "name": "Zalo", "url": "https://zalo.me/0379709101", "icon": "zalo" },
+      { "name": "Portfolio", "url": "https://nptt.io.vn", "icon": "briefcase" }
+    ]
+  },
+  "about": {
+    "intro": "",
+    "hobbies": ["🎨 Vẽ tranh", "🎮 Chơi game", "🍰 Làm bánh", "NONE", "Ăn lúa thay cơm"],
+    "timeline": [
+      { "year": "2020", "title": "Học lớp 1", "desc": "Làm quen với các bạn cùng lớp" },
+      { "year": "2021", "title": "Học lớp 2", "desc": "Bị các bạn xa lánh" },
+      { "year": "2022", "title": "Học lớp 3", "desc": "Các bạn bắt đầu rời xa mình" },
+      { "year": "2023", "title": "Nghĩ Học!", "desc": "Tủi thân quá nên mìn nghĩ họt luôn?" }
+    ]
+  },
+  "music": {
+    "enablePlayer": true,
+    "playlist": [
+      { "title": "DungKhocNhuThe??", "file": "assets/nhac1.mp3", "cover": "assets/cover1.jpg" },
+      { "title": "Trôi~", "file": "assets/nhac2.mp3", "cover": "assets/cover2.jpg" },
+      { "title": "????????", "file": "assets/nhac3.mp3", "cover": "assets/cover3.jpg" }
+    ]
+  }
+}
